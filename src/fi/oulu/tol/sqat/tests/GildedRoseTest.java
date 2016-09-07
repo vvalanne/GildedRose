@@ -36,7 +36,7 @@ public class GildedRoseTest {
 	}
     
 	@Test
-	public void testTheTruth() {
+	public void testUpdateEndOfDay() {
 		fail("Test not implemented");
 	}
 }
