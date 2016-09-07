@@ -1,42 +1,98 @@
-package fi.oulu.tol.sqat.tests;
-
-import static org.junit.Assert.*;
+package fi.oulu.tol.sqat;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
 
-import fi.oulu.tol.sqat.GildedRose;
-import fi.oulu.tol.sqat.Item;
+public class GildedRose {
 
-public class GildedRoseTest {
+	private static List<Item> items = null;
 
-// Example scenarios for testing
-//   Item("+5 Dexterity Vest", 10, 20));
-//   Item("Aged Brie", 2, 0));
-//   Item("Elixir of the Mongoose", 5, 7));
-//   Item("Sulfuras, Hand of Ragnaros", 0, 80));
-//   Item("Backstage passes to a TAFKAL80ETC concert", 15, 20));
-//   Item("Conjured Mana Cake", 3, 6));
-
-	@Test
-	public void testUpdateEndOfDay_AgedBrie_Quality_10_11() {
-		// Arrange
-		GildedRose store = new GildedRose();
-		store.addItem(new Item("Aged Brie", 2, 10) );
-		
-		// Act
-		store.updateEndOfDay();
-		
-		// Assert
-		List<Item> items = store.getItems();
-		Item itemBrie = items.get(0);
-		assertEquals(11, itemBrie.getQuality());
+	public List<Item> getItems() {
+		return items;
 	}
-    
-	@Test
-	public void testTheTruth() {
-		fail("Test not implemented");
+	
+	public void addItem(Item item) {
+		items.add(item);
 	}
+
+	public GildedRose() {
+		items = new ArrayList<Item>();
+	}
+    public static void updateEndOfDay()
+    {
+        for (int i = 0; i < items.size(); i++)
+        {
+            if ((!"Aged Brie".equals(items.get(i).getName())) && !"Backstage passes to a TAFKAL80ETC concert".equals(items.get(i).getName())) 
+            {
+                if (items.get(i).getQuality() > 0)
+                {
+                    if (!"Sulfuras, Hand of Ragnaros".equals(items.get(i).getName()))
+                    {
+                        items.get(i).setQuality(items.get(i).getQuality() - 1);
+                    }
+                }
+            }
+            else
+            {
+                if (items.get(i).getQuality() < 50)
+                {
+                    items.get(i).setQuality(items.get(i).getQuality() + 1);
+
+                    if ("Backstage passes to a TAFKAL80ETC concert".equals(items.get(i).getName()))
+                    {
+                        if (items.get(i).getSellIn() < 11)
+                        {
+                            if (items.get(i).getQuality() < 50)
+                            {
+                                items.get(i).setQuality(items.get(i).getQuality() + 1);
+                            }
+                        }
+
+                        if (items.get(i).getSellIn() < 6)
+                        {
+                            if (items.get(i).getQuality() < 50)
+                            {
+                                items.get(i).setQuality(items.get(i).getQuality() + 1);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!"Sulfuras, Hand of Ragnaros".equals(items.get(i).getName()))
+            {
+                items.get(i).setSellIn(items.get(i).getSellIn() - 1);
+            }
+
+            if (items.get(i).getSellIn() < 0)
+            {
+                if (!"Aged Brie".equals(items.get(i).getName()))
+                {
+                    if (!"Backstage passes to a TAFKAL80ETC concert".equals(items.get(i).getName()))
+                    {
+                        if (items.get(i).getQuality() > 0)
+                        {
+                            if (!"Sulfuras, Hand of Ragnaros".equals(items.get(i).getName()))
+                            {
+                                items.get(i).setQuality(items.get(i).getQuality() - 1);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        items.get(i).setQuality(items.get(i).getQuality() - items.get(i).getQuality());
+                    }
+                }
+                else
+                {
+                    if (items.get(i).getQuality() < 50)
+                    {
+                        items.get(i).setQuality(items.get(i).getQuality() + 1);
+                    }
+                }
+            }
+        }
+    }
+
 }
