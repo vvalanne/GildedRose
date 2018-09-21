@@ -65,6 +65,7 @@ public class GildedRoseTest {
 		// Act
 		store.updateEndOfDay();
 		
+		
 		// Assert
 		List<Item> items = store.getItems();
 		Item itemMongoose = items.get(0);
